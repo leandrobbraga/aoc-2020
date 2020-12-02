@@ -1,6 +1,12 @@
-use regex::Regex;
 use std::fs::read_to_string;
 use std::ops::RangeInclusive;
+
+use lazy_static::lazy_static;
+use regex::Regex;
+
+lazy_static! {
+    static ref RE: Regex = Regex::new(r"(\d+)-(\d+) (\w): (\w*)").unwrap();
+}
 
 struct PasswordPolicy {
     lower_bound: usize,
@@ -61,8 +67,7 @@ fn parse_password_policies(password_policies: &String) -> Vec<PasswordPolicy> {
 }
 
 fn parse_password_policy(password_policy: &str) -> Option<PasswordPolicy> {
-    let re: Regex = Regex::new(r"(\d+)-(\d+) (\w): (\w*)").unwrap();
-    let result = re.captures(password_policy).unwrap();
+    let result = RE.captures(password_policy).unwrap();
 
     Some(PasswordPolicy {
         lower_bound: result.get(1)?.as_str().parse().unwrap(),
