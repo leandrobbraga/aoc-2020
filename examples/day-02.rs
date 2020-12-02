@@ -39,7 +39,7 @@ impl PasswordPolicy {
 }
 
 fn main() {
-    let file_contents: String = read_to_string("./examples/day-02.txt").unwrap();
+    let file_contents: String = read_to_string("./examples/input/day-02.txt").unwrap();
 
     let password_policies = parse_password_policies(&file_contents);
 
