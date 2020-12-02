@@ -29,8 +29,7 @@ impl PasswordPolicy {
     }
 
     fn check_policy_2(&self) -> bool {
-        (self.check_position(self.lower_bound) || self.check_position(self.upper_bound))
-            && !(self.check_position(self.lower_bound) && self.check_position(self.upper_bound))
+        self.check_position(self.lower_bound) ^ self.check_position(self.upper_bound)
     }
 
     fn check_position(&self, position: usize) -> bool {
