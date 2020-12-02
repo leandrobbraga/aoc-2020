@@ -62,17 +62,17 @@ fn main() {
 fn parse_password_policies(password_policies: &String) -> Vec<PasswordPolicy> {
     password_policies
         .lines()
-        .map(|policy| parse_password_policy(policy).unwrap())
+        .map(|policy| parse_password_policy(policy))
         .collect()
 }
 
-fn parse_password_policy(password_policy: &str) -> Option<PasswordPolicy> {
+fn parse_password_policy(password_policy: &str) -> PasswordPolicy {
     let result = RE.captures(password_policy).unwrap();
 
-    Some(PasswordPolicy {
-        lower_bound: result.get(1)?.as_str().parse().unwrap(),
-        upper_bound: result.get(2)?.as_str().parse().unwrap(),
-        character: result.get(3)?.as_str().parse().unwrap(),
-        password: result.get(4)?.as_str().parse().unwrap(),
-    })
+    PasswordPolicy {
+        lower_bound: (&result[1]).parse().unwrap(),
+        upper_bound: (&result[2]).parse().unwrap(),
+        character: (&result[3]).parse().unwrap(),
+        password: (&result[4]).parse().unwrap(),
+    }
 }
