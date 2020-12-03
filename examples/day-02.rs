@@ -1,4 +1,4 @@
-use std::fs::read_to_string;
+use std::fs;
 use std::ops::RangeInclusive;
 
 use lazy_static::lazy_static;
@@ -38,7 +38,7 @@ impl PasswordPolicy {
 }
 
 fn main() {
-    let file_contents: String = read_to_string("./examples/input/day-02.txt").unwrap();
+    let file_contents: String = fs::read_to_string("./examples/input/day-02.txt").unwrap();
 
     let password_policies = parse_password_policies(&file_contents);
 
