@@ -4,16 +4,15 @@ fn main() {
     let matrix: Vec<Vec<char>> = fs::read_to_string("./examples/input/day-03.txt")
         .unwrap()
         .lines()
-        .map(|s| s.to_string().chars().collect())
+        .map(|line| line.chars().collect())
         .collect();
 
     let slopes: Vec<(usize, usize)> = vec![(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)];
 
-    let mut result = 1;
-
-    for slope in slopes {
-        result *= solve(&matrix, slope.0, slope.1);
-    }
+    let result: usize = slopes
+        .iter()
+        .map(|slope| solve(&matrix, slope.0, slope.1))
+        .product();
 
     println!("result: {}", result)
 }
