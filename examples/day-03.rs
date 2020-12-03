@@ -1,41 +1,40 @@
 use std::fs;
 
 fn main() {
-    let map: Vec<String> = fs::read_to_string("./examples/input/day-03.txt")
+    let matrix: Vec<Vec<char>> = fs::read_to_string("./examples/input/day-03.txt")
         .unwrap()
         .lines()
-        .map(|s| s.to_string())
+        .map(|s| s.to_string().chars().collect())
         .collect();
 
-    let matrix: Vec<Vec<char>> = map.iter().map(|line| line.chars().collect()).collect();
-    let slopes = vec![(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)];
+    let slopes: Vec<(usize, usize)> = vec![(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)];
 
     let mut result = 1;
 
     for slope in slopes {
-        result = result * solve(&matrix, slope.0, slope.1);
+        result *= solve(&matrix, slope.0, slope.1);
     }
 
-    println!("{}", result)
+    println!("result: {}", result)
 }
 
-fn solve(matrix: &Vec<Vec<char>>, mut vertical_step: usize, mut horizontal_step: usize) -> usize {
+fn solve(matrix: &Vec<Vec<char>>, v_step: usize, h_step: usize) -> usize {
     let n_rows: usize = matrix.len();
-    let n_columns: usize = matrix[0].len();
+    let n_cols: usize = matrix[0].len();
+
     let mut n_trees: usize = 0;
-    let mut j: usize = 0;
+    let mut h_pos: usize = 0;
 
-    for i in (vertical_step..n_rows).step_by(vertical_step) {
-        j = j + horizontal_step;
-        j = j % n_columns;
+    for v_pos in (v_step..n_rows).step_by(v_step) {
+        h_pos = h_pos + h_step;
+        h_pos = h_pos % n_cols;
 
-        if matrix[i][j] == '#' {
-            n_trees = n_trees + 1;
+        if matrix[v_pos][h_pos] == '#' {
+            n_trees += 1;
         }
     }
-    println!(
-        "vertical:{} horizontal:{} - n_trees:{}",
-        vertical_step, horizontal_step, n_trees
-    );
+
+    println!("slope ({}, {}) - trees:{}", v_step, h_step, n_trees);
+
     n_trees
 }
