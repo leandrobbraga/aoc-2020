@@ -44,12 +44,3 @@ fn main() {
         .count();
     println!("{}", count);
 }
-
-fn check_passport(passport: &str, required_fields: &Vec<&str>) -> bool {
-    for field in required_fields {
-        if !passport.contains(field) {
-            return false;
-        }
-    }
-    return true;
-}
