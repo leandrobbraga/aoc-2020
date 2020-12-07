@@ -24,7 +24,7 @@ struct Passport {
 }
 
 impl Passport {
-    fn parse(data: &str) -> Option<Passport> {
+    fn new(data: &str) -> Option<Passport> {
         let dict: HashMap<&str, &str> = data
             .split(|c| c == ' ' || c == '\n')
             .filter_map(|s| {
@@ -98,7 +98,7 @@ fn main() {
 
     let passports: Vec<Passport> = data
         .split("\n\n")
-        .map(|passport| Passport::parse(passport))
+        .map(|passport| Passport::new(passport))
         .filter(|passport| passport.is_some())
         .map(|passport| passport.unwrap())
         .collect();
