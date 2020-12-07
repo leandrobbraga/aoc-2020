@@ -1,14 +1,17 @@
 use std::fs;
 
 fn main() {
-    let result = fs::read_to_string("./examples/input/day-05.txt")
+    let seat_ids: Vec<u32> = fs::read_to_string("./examples/input/day-05.txt")
         .unwrap()
         .lines()
         .map(|line| parse(line))
-        .max()
-        .unwrap();
+        .collect();
 
-    println!("{}", result)
+    let result_part_1 = seat_ids.iter().max().unwrap();
+
+    println!("Part 1: {}", result_part_1);
+
+    solve_part_02(&seat_ids)
 }
 
 fn parse(line: &str) -> u32 {
@@ -29,5 +32,20 @@ fn parse(line: &str) -> u32 {
         }
     }
 
-    return (lower_bound_row * 8. + upper_bound_col) as u32;
+    return (lower_bound_row * 8.0 + lower_bound_col) as u32;
+}
+
+fn solve_part_02(seat_ids: &Vec<u32>) {
+    let mut seat_ids = seat_ids.clone();
+    seat_ids.sort();
+
+    for (i, seat_id) in seat_ids.iter().enumerate() {
+        if i == 0 {
+            continue;
+        }
+
+        if seat_id - seat_ids[i - 1] == 2 {
+            println!("Part 2: {}", seat_id - 1)
+        }
+    }
 }
