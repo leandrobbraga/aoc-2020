@@ -1,12 +1,13 @@
 extern crate strum;
+#[macro_use]
+extern crate strum_macros;
 
 use std::collections::HashSet;
 use std::fs;
 
-#[macro_use]
-extern crate strum_macros;
 #[derive(EnumString, Debug)]
 enum Operations {
+    #[allow(clippy::non_camel_case_types)]
     nop,
     acc,
     jmp,
@@ -44,14 +45,15 @@ fn solve_part_1(instructions: &Vec<Instruction>) {
     println!("Accumulator value: {}", accumulator);
 }
 
-fn execute(instructions: &Vec<Instruction>) -> (usize, i32, HashSet<usize>) {
+fn execute(instructions: &Vec<Instruction>) -> (bool, i32, HashSet<usize>) {
     let mut instruction_pointer: usize = 0;
-    let program_lenght = instructions.len();
-    let mut visited: HashSet<usize> = HashSet::new();
+    let mut visited_instructions: HashSet<usize> = HashSet::new();
     let mut accumulator = 0;
 
-    while instruction_pointer < program_lenght && !visited.contains(&instruction_pointer) {
-        visited.insert(instruction_pointer);
+    while instruction_pointer < instructions.len()
+        && !visited_instructions.contains(&instruction_pointer)
+    {
+        visited_instructions.insert(instruction_pointer);
 
         let instruction: &Instruction = &instructions[instruction_pointer];
         match instruction.operation {
@@ -65,42 +67,38 @@ fn execute(instructions: &Vec<Instruction>) -> (usize, i32, HashSet<usize>) {
             }
         }
     }
-    (instruction_pointer, accumulator, visited)
+    (
+        instruction_pointer >= instructions.len(),
+        accumulator,
+        visited_instructions,
+    )
 }
 
 fn solve_part_2(instructions: &mut Vec<Instruction>) {
-    let (_, _, visited) = execute(instructions);
+    let (_, _, visited_instructions) = execute(instructions);
 
-    for instruction_pointer in visited {
-        instructions[instruction_pointer] = match flip_operation(instructions, instruction_pointer)
+    for instruction_pointer in visited_instructions {
+        instructions[instruction_pointer] = match flip_operation(&instructions[instruction_pointer])
         {
             None => continue,
-            Some(new_instruction) => new_instruction,
+            Some(instr) => instr,
         };
 
-        let (new_ip, accumulator, _) = execute(instructions);
+        let (terminated, acc, _) = execute(instructions);
 
-        instructions[instruction_pointer] = match flip_operation(instructions, instruction_pointer)
-        {
-            None => continue,
-            Some(new_instruction) => new_instruction,
-        };
+        instructions[instruction_pointer] =
+            flip_operation(&instructions[instruction_pointer]).unwrap();
 
-        if new_ip >= instructions.len() {
+        if terminated {
             println!("Part 2:");
             println!("Final instruction: {}", instruction_pointer);
-            println!("Accumulator value: {}", accumulator);
-            return;
+            println!("Accumulator value: {}", acc);
+            break;
         }
     }
 }
 
-fn flip_operation(
-    instructions: &mut Vec<Instruction>,
-    instruction_pointer: usize,
-) -> Option<Instruction> {
-    let instruction: &Instruction = &instructions[instruction_pointer];
-
+fn flip_operation(instruction: &Instruction) -> Option<Instruction> {
     match instruction.operation {
         Operations::acc => None,
         Operations::nop => Some(Instruction {
