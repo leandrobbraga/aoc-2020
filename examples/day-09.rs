@@ -43,13 +43,14 @@ fn solve_part_2(numbers: &Vec<u64>, number: u64) {
 
     while n < numbers.len() {
         for i in 0..(numbers.len() - n) {
-            let a = numbers[i..(i + n)].iter();
-            if a.clone().sum::<u64>() == number {
+            let numbers_iterator = || numbers[i..(i + n)].iter();
+
+            if numbers_iterator().sum::<u64>() == number {
                 println!(
                     "Part 2: {} (min) + {} (max) = {}",
-                    a.clone().min().unwrap(),
-                    a.clone().max().unwrap(),
-                    a.clone().min().unwrap() + a.clone().max().unwrap()
+                    numbers_iterator().min().unwrap(),
+                    numbers_iterator().max().unwrap(),
+                    numbers_iterator().min().unwrap() + numbers_iterator().max().unwrap()
                 )
             }
         }
