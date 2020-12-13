@@ -46,7 +46,7 @@ fn solve_part_2(numbers: &Vec<u64>, number: u64) {
             let a = numbers[i..(i + n)].iter();
             if a.clone().sum::<u64>() == number {
                 println!(
-                    "{} + {} = {}",
+                    "Part 2: {} (min) + {} (max) = {}",
                     a.clone().min().unwrap(),
                     a.clone().max().unwrap(),
                     a.clone().min().unwrap() + a.clone().max().unwrap()
