@@ -4,7 +4,6 @@ use std::fs;
 fn main() {
     let input: String = fs::read_to_string("./examples/input/day-11.txt").unwrap();
     let mut seat_map: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
-    print_seat_map(&seat_map);
     solve_part_01(&mut seat_map);
 }
 
