@@ -4,26 +4,27 @@ use std::fs;
 fn main() {
     let input: String = fs::read_to_string("./examples/input/day-11.txt").unwrap();
     let mut seat_map: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
+    print_seat_map(&seat_map);
     solve_part_01(&mut seat_map);
 }
 
 fn print_seat_map(seat_map: &Vec<Vec<char>>) {
-    for line in seat_map {
-        line.iter().map(|char| print!("{}", char)).collect::<()>();
-        println!();
-    }
+    seat_map
+        .iter()
+        .map(|line| {
+            line.iter().map(|char| print!("{}", char)).for_each(drop);
+            println!()
+        })
+        .for_each(drop)
 }
 
 fn solve_part_01(seat_map: &mut Vec<Vec<char>>) {
     let mut seat_map = seat_map.clone();
     let mut new_seat_map = seat_map.clone();
     let mut solved: bool = false;
-    let mut round = 0;
     let mut seats = 0;
 
     while !solved {
-        round += 1;
-
         for i in 0..seat_map.len() {
             for j in 0..seat_map[0].len() {
                 if seat_map[i][j] == '.' {
