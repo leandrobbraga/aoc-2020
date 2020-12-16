@@ -10,10 +10,7 @@ fn main() {
 fn print_seat_map(seat_map: &Vec<Vec<char>>) {
     seat_map
         .iter()
-        .map(|line| {
-            line.iter().map(|char| print!("{}", char)).for_each(drop);
-            println!()
-        })
+        .map(|line| println!("{}", line.iter().collect::<String>()))
         .for_each(drop)
 }
 
