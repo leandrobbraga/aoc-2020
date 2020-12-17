@@ -73,14 +73,11 @@ fn solve_part_01(instructions: &Vec<Instruction>) {
     };
 
     for instruction in instructions {
-        println!("{:?}", ship);
-        println!("{:?}", instruction);
         let new_position = make_position(instruction, ship.direction);
         ship = ship + new_position;
-        println!("{:?}", ship);
     }
 
-    println!("{} {}", ship.position.0, ship.position.1);
+    println!("x:{} y:{}", ship.position.1, ship.position.0);
     println!(
         "Part 1 - {}",
         (ship.position.0.abs() + ship.position.1.abs())
@@ -141,7 +138,6 @@ fn rotate_direction(position_direction: Direction, instruction_direction: Direct
             Left => North,
             Right => South,
             _ => {
-                println!("{:?}", instruction_direction);
                 panic!("Instruction direction should be always relative!")
             }
         },
