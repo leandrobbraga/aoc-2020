@@ -77,53 +77,58 @@ fn solve_part_01(instructions: &Vec<Instruction>) {
         ship = ship + new_position;
     }
 
-    println!("x:{} y:{}", ship.position.1, ship.position.0);
+    println!("Part 1");
+    println!("------");
     println!(
-        "Part 1 - {}",
+        "Final Position - x:{} y:{}",
+        ship.position.1, ship.position.0
+    );
+    println!(
+        "Result - {}",
         (ship.position.0.abs() + ship.position.1.abs())
     );
 }
 
-fn make_position(instruction: &Instruction, position_direction: Direction) -> Position {
+fn make_position(instruction: &Instruction, original_direction: Direction) -> Position {
     match instruction.direction {
         North => Position {
             position: (instruction.value as i32, 0),
-            direction: position_direction,
+            direction: original_direction,
         },
         South => Position {
             position: (-(instruction.value as i32), 0),
-            direction: position_direction,
+            direction: original_direction,
         },
         East => Position {
             position: (0, instruction.value as i32),
-            direction: position_direction,
+            direction: original_direction,
         },
         West => Position {
             position: (0, -(instruction.value as i32)),
-            direction: position_direction,
+            direction: original_direction,
         },
         Forward => make_position(
             &Instruction {
-                direction: position_direction,
+                direction: original_direction,
                 value: instruction.value,
             },
-            position_direction,
+            original_direction,
         ),
         _ => {
-            let mut direction = position_direction;
+            let mut new_direction = original_direction;
             for _i in 0..instruction.value / 90 {
-                direction = rotate_direction(direction, instruction.direction);
+                new_direction = rotate_direction(new_direction, instruction.direction);
             }
             Position {
                 position: (0, 0),
-                direction,
+                direction: new_direction,
             }
         }
     }
 }
 
-fn rotate_direction(position_direction: Direction, instruction_direction: Direction) -> Direction {
-    match position_direction {
+fn rotate_direction(original_direction: Direction, instruction_direction: Direction) -> Direction {
+    match original_direction {
         North => match instruction_direction {
             Left => West,
             Right => East,
