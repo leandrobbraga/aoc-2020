@@ -1,8 +1,7 @@
 use std::fs::read_to_string;
 
 fn main() {
-    let file_contents: String =
-        read_to_string("./examples/input/day-01.txt").expect("Could not read the file.");
+    let file_contents: String = read_to_string("./examples/input/day-01.txt").unwrap();
 
     let numbers: Vec<u32> = file_contents
         .lines()

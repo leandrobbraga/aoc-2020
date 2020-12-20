@@ -22,20 +22,10 @@ struct Child {
 
 fn main() {
     let input = fs::read_to_string("./examples/input/day-07.txt").unwrap();
-    let rules = input_to_rules(input);
+    let rules: Vec<Rule> = input.lines().map(|line| line_to_rule(line)).collect();
 
     println!("Part 1: {}", count_containers_part_1(&rules, "shiny gold"));
     println!("Part 2: {}", count_containers_part_2(&rules, "shiny gold"));
-}
-
-fn input_to_rules(input: String) -> Vec<Rule> {
-    let mut rules: Vec<Rule> = vec![];
-
-    for line in input.lines() {
-        rules.push(line_to_rule(line))
-    }
-
-    return rules;
 }
 
 fn line_to_rule(unparsed_rule: &str) -> Rule {
@@ -60,15 +50,15 @@ fn count_containers_part_1(rules: &Vec<Rule>, color: &str) -> usize {
     let mut visited_bags: HashSet<String> = HashSet::new();
     let mut queue: Queue<String> = queue![];
 
-    queue.add(color.to_string());
+    queue.add(color.to_string()).unwrap();
 
     while queue.size() > 0 {
         let next: String = queue.remove().unwrap();
 
         if !visited_bags.contains(&next) {
             let containers: Vec<(u32, String)> = find_containers(&rules, &next);
-            for (amount, color) in containers {
-                queue.add(color);
+            for (_amount, color) in containers {
+                queue.add(color).unwrap();
             }
         }
 
