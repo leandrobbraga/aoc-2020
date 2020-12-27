@@ -45,6 +45,7 @@ fn main() {
     let contents: String = fs::read_to_string("./examples/input/day-12.txt").unwrap();
     let instructions = parse_input(contents);
     solve_part_01(&instructions);
+    solve_part_02(&instructions);
 }
 
 fn parse_input(input: String) -> Vec<Instruction> {
@@ -78,6 +79,74 @@ fn solve_part_01(instructions: &Vec<Instruction>) {
     }
 
     println!("Part 1");
+    println!("------");
+    println!(
+        "Final Position - x:{} y:{}",
+        ship.position.1, ship.position.0
+    );
+    println!(
+        "Result - {}",
+        (ship.position.0.abs() + ship.position.1.abs())
+    );
+}
+
+fn solve_part_02(instructions: &Vec<Instruction>) {
+    let mut waypoint: Position = Position {
+        position: (1, 10),
+        direction: East,
+    };
+
+    let mut ship: Position = Position {
+        position: (0, 0),
+        direction: East,
+    };
+
+    let rotation = vec![(0, 1), (1, 0), (0, -1), (-1, 0)];
+
+    for instruction in instructions {
+        match instruction.direction {
+            North | South | East | West => {
+                let new_position = make_position(instruction, ship.direction);
+                waypoint = waypoint + new_position;
+            }
+            Left => {
+                let rotation_matrix = rotation[(instruction.value / 90) as usize];
+                waypoint = Position {
+                    position: (
+                        waypoint.position.0 * rotation_matrix.0
+                            + waypoint.position.1 * rotation_matrix.1,
+                        waypoint.position.0 * rotation_matrix.1
+                            - waypoint.position.1 * rotation_matrix.0,
+                    ),
+                    direction: Direction::North,
+                }
+            }
+            Right => {
+                let rotation_matrix = rotation[(4 - (instruction.value / 90)) as usize];
+                waypoint = Position {
+                    position: (
+                        waypoint.position.1 * rotation_matrix.0
+                            + waypoint.position.0 * rotation_matrix.1,
+                        waypoint.position.1 * rotation_matrix.1
+                            - waypoint.position.0 * rotation_matrix.0,
+                    ),
+                    direction: Direction::North,
+                }
+            }
+            Forward => {
+                let new_position = Position {
+                    position: (
+                        waypoint.position.0 * instruction.value as i32,
+                        waypoint.position.1 * instruction.value as i32,
+                    ),
+                    direction: Direction::North,
+                };
+                ship = ship + new_position;
+            }
+        }
+    }
+
+    println!("Part 2");
     println!("------");
     println!(
         "Final Position - x:{} y:{}",
