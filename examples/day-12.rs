@@ -91,8 +91,8 @@ fn solve_part_01(instructions: &Vec<Instruction>) {
 }
 
 fn solve_part_02(instructions: &Vec<Instruction>) {
-    let mut waypoint: Position = Position {
-        position: (1, 10),
+    let mut wp: Position = Position {
+        position: (10, 1),
         direction: East,
     };
 
@@ -101,47 +101,22 @@ fn solve_part_02(instructions: &Vec<Instruction>) {
         direction: East,
     };
 
-    let rotation = vec![(0, 1), (1, 0), (0, -1), (-1, 0)];
-
     for instruction in instructions {
         match instruction.direction {
             North | South | East | West => {
-                let new_position = make_position(instruction, ship.direction);
-                waypoint = waypoint + new_position;
+                wp = wp + make_position(instruction, ship.direction);
             }
-            Left => {
-                let rotation_matrix = rotation[(instruction.value / 90) as usize];
-                waypoint = Position {
-                    position: (
-                        waypoint.position.0 * rotation_matrix.0
-                            + waypoint.position.1 * rotation_matrix.1,
-                        waypoint.position.0 * rotation_matrix.1
-                            - waypoint.position.1 * rotation_matrix.0,
-                    ),
-                    direction: Direction::North,
-                }
-            }
-            Right => {
-                let rotation_matrix = rotation[(4 - (instruction.value / 90)) as usize];
-                waypoint = Position {
-                    position: (
-                        waypoint.position.1 * rotation_matrix.0
-                            + waypoint.position.0 * rotation_matrix.1,
-                        waypoint.position.1 * rotation_matrix.1
-                            - waypoint.position.0 * rotation_matrix.0,
-                    ),
-                    direction: Direction::North,
-                }
-            }
+            Left => wp = rotate_waypoint(wp, instruction.value as i32),
+            Right => wp = rotate_waypoint(wp, -(instruction.value as i32)),
             Forward => {
-                let new_position = Position {
-                    position: (
-                        waypoint.position.0 * instruction.value as i32,
-                        waypoint.position.1 * instruction.value as i32,
-                    ),
-                    direction: Direction::North,
-                };
-                ship = ship + new_position;
+                ship = ship
+                    + Position {
+                        position: (
+                            wp.position.0 * instruction.value as i32,
+                            wp.position.1 * instruction.value as i32,
+                        ),
+                        direction: Direction::North,
+                    };
             }
         }
     }
@@ -158,22 +133,42 @@ fn solve_part_02(instructions: &Vec<Instruction>) {
     );
 }
 
+fn rotate_waypoint(position: Position, degrees: i32) -> Position {
+    // (sin, cos)
+    let rotation = vec![(0, 1), (1, 0), (0, -1), (-1, 0)];
+    let i: usize;
+
+    if degrees > 0 {
+        i = (degrees / 90) as usize;
+    } else {
+        i = (4 + (degrees / 90)) as usize;
+    }
+
+    Position {
+        position: (
+            rotation[i].1 * position.position.0 - rotation[i].0 * position.position.1,
+            rotation[i].0 * position.position.0 + rotation[i].1 * position.position.1,
+        ),
+        direction: Direction::North,
+    }
+}
+
 fn make_position(instruction: &Instruction, original_direction: Direction) -> Position {
     match instruction.direction {
         North => Position {
-            position: (instruction.value as i32, 0),
-            direction: original_direction,
-        },
-        South => Position {
-            position: (-(instruction.value as i32), 0),
-            direction: original_direction,
-        },
-        East => Position {
             position: (0, instruction.value as i32),
             direction: original_direction,
         },
-        West => Position {
+        South => Position {
             position: (0, -(instruction.value as i32)),
+            direction: original_direction,
+        },
+        East => Position {
+            position: (instruction.value as i32, 0),
+            direction: original_direction,
+        },
+        West => Position {
+            position: (-(instruction.value as i32), 0),
             direction: original_direction,
         },
         Forward => make_position(
