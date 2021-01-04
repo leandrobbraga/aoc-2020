@@ -67,7 +67,7 @@ fn parse_input(input: String) -> Vec<Instruction> {
         .collect()
 }
 
-fn solve_part_01(instructions: &Vec<Instruction>) {
+fn solve_part_01(instructions: &[Instruction]) {
     let mut ship: Position = Position {
         position: (0, 0),
         direction: East,
@@ -90,7 +90,7 @@ fn solve_part_01(instructions: &Vec<Instruction>) {
     );
 }
 
-fn solve_part_02(instructions: &Vec<Instruction>) {
+fn solve_part_02(instructions: &[Instruction]) {
     let mut wp: Position = Position {
         position: (10, 1),
         direction: East,

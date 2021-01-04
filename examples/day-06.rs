@@ -11,7 +11,7 @@ fn main() {
     println!("Part 02: {}", result_part_02);
 }
 
-fn solve(groups_answers: &Vec<&str>) -> (u32, u32) {
+fn solve(groups_answers: &[&str]) -> (u32, u32) {
     let mut answers_counter: HashMap<char, u32> = HashMap::new();
     let mut result_part_01: u32 = 0;
     let mut result_part_02: u32 = 0;

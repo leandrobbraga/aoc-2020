@@ -46,7 +46,7 @@ fn line_to_rule(unparsed_rule: &str) -> Rule {
     }
 }
 
-fn count_containers_part_1(rules: &Vec<Rule>, color: &str) -> usize {
+fn count_containers_part_1(rules: &[Rule], color: &str) -> usize {
     let mut visited_bags: HashSet<String> = HashSet::new();
     let mut queue: Queue<String> = queue![];
 
@@ -65,10 +65,10 @@ fn count_containers_part_1(rules: &Vec<Rule>, color: &str) -> usize {
         visited_bags.insert(next);
     }
 
-    return visited_bags.len() - 1;
+    visited_bags.len() - 1
 }
 
-fn find_containers(rules: &Vec<Rule>, color: &str) -> Vec<(u32, String)> {
+fn find_containers(rules: &[Rule], color: &str) -> Vec<(u32, String)> {
     let mut containers: Vec<(u32, String)> = vec![];
 
     for rule in rules {
@@ -83,7 +83,7 @@ fn find_containers(rules: &Vec<Rule>, color: &str) -> Vec<(u32, String)> {
     containers
 }
 
-fn count_containers_part_2(rules: &Vec<Rule>, color: &str) -> u32 {
+fn count_containers_part_2(rules: &[Rule], color: &str) -> u32 {
     let mut result = 0;
 
     for rule in rules {

@@ -5,14 +5,14 @@ fn main() {
     let input: String = fs::read_to_string("./examples/input/day-10.txt").unwrap();
     let mut adapters: Vec<u64> = input.lines().map(|line| line.parse().unwrap()).collect();
     adapters.push(0);
-    adapters.sort();
+    adapters.sort_unstable();
     adapters.push(adapters[adapters.len() - 1] + 3);
 
     solve_part_01(&adapters);
     solve_part_02(&adapters);
 }
 
-fn solve_part_01(adapters: &Vec<u64>) {
+fn solve_part_01(adapters: &[u64]) {
     let mut ones: u64 = 0;
     let mut threes: u64 = 0;
 
@@ -36,7 +36,7 @@ fn solve_part_01(adapters: &Vec<u64>) {
     )
 }
 
-fn solve_part_02(adapters: &Vec<u64>) {
+fn solve_part_02(adapters: &[u64]) {
     let mut paths: Vec<u64> = vec![];
 
     paths.push(1);

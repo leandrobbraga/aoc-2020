@@ -7,7 +7,7 @@ fn main() {
     solve_part_2(&numbers, wrong_number)
 }
 
-fn solve_part_1(numbers: &Vec<u64>) -> Option<u64> {
+fn solve_part_1(numbers: &[u64]) -> Option<u64> {
     let preamble: usize = 25;
 
     for (position, number) in numbers.iter().enumerate() {
@@ -20,13 +20,13 @@ fn solve_part_1(numbers: &Vec<u64>) -> Option<u64> {
         }
 
         println!("Part 1: {}", number);
-        return Some(number.clone());
+        return Some(*number);
     }
 
-    return None;
+    None
 }
 
-fn find_match(numbers: &Vec<u64>, preamble: usize, position: usize) -> bool {
+fn find_match(numbers: &[u64], preamble: usize, position: usize) -> bool {
     for i in (position - preamble)..position {
         for j in i..position {
             if (numbers[i] + numbers[j]) == numbers[position] {
@@ -35,10 +35,10 @@ fn find_match(numbers: &Vec<u64>, preamble: usize, position: usize) -> bool {
         }
     }
 
-    return false;
+    false
 }
 
-fn solve_part_2(numbers: &Vec<u64>, number: u64) {
+fn solve_part_2(numbers: &[u64], number: u64) {
     let mut n = 2;
 
     while n < numbers.len() {

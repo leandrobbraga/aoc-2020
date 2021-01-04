@@ -27,9 +27,9 @@ impl Passport {
     fn new(data: &str) -> Option<Passport> {
         let dict: HashMap<&str, &str> = data
             .split(|c| c == ' ' || c == '\n')
-            .filter_map(|s| {
-                let mut kv = s.split(":");
-                Some((kv.next().unwrap(), kv.next().unwrap()))
+            .map(|s| {
+                let mut kv = s.split(':');
+                Some((kv.next().unwrap(), kv.next().unwrap())).unwrap()
             })
             .collect();
 
@@ -70,18 +70,15 @@ impl Passport {
         match HGT.captures(&self.hgt) {
             None => false,
             Some(captures) => match (u32::from_str(&captures[1]), &captures[2]) {
-                (Ok(height), "cm") => height >= 150 && height <= 193,
-                (Ok(height), "in") => height >= 59 && height <= 76,
+                (Ok(height), "cm") => (150..=193).contains(&height),
+                (Ok(height), "in") => (59..=76).contains(&height),
                 _ => false,
             },
         }
     }
 
     fn validate_hcl(&self) -> bool {
-        match HCL.captures(&self.hcl) {
-            None => false,
-            Some(_) => true,
-        }
+        HCL.captures(&self.hcl).is_some()
     }
 
     fn validate_ecl(&self) -> bool {

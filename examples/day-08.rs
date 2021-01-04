@@ -6,8 +6,8 @@ use std::collections::HashSet;
 use std::fs;
 
 #[derive(EnumString, Debug)]
+#[allow(non_camel_case_types)]
 enum Operations {
-    #[allow(clippy::non_camel_case_types)]
     nop,
     acc,
     jmp,
@@ -20,7 +20,7 @@ struct Instruction {
 
 impl Instruction {
     fn new(unparsed_instruction: &str) -> Instruction {
-        let unparsed_instruction: Vec<&str> = unparsed_instruction.split(" ").collect();
+        let unparsed_instruction: Vec<&str> = unparsed_instruction.split(' ').collect();
         Instruction {
             operation: unparsed_instruction[0].parse().unwrap(),
             argument: unparsed_instruction[1].parse().unwrap(),
@@ -37,7 +37,7 @@ fn main() {
     solve_part_2(&mut instructions);
 }
 
-fn solve_part_1(instructions: &Vec<Instruction>) {
+fn solve_part_1(instructions: &[Instruction]) {
     let (instruction_pointer, accumulator, _) = execute(instructions);
 
     println!("Part 1:");
@@ -45,7 +45,7 @@ fn solve_part_1(instructions: &Vec<Instruction>) {
     println!("Accumulator value: {}", accumulator);
 }
 
-fn execute(instructions: &Vec<Instruction>) -> (bool, i32, HashSet<usize>) {
+fn execute(instructions: &[Instruction]) -> (bool, i32, HashSet<usize>) {
     let mut instruction_pointer: usize = 0;
     let mut visited_instructions: HashSet<usize> = HashSet::new();
     let mut accumulator = 0;

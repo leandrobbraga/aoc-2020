@@ -32,12 +32,12 @@ fn parse(line: &str) -> u32 {
         }
     }
 
-    return (lower_bound_row * 8.0 + lower_bound_col) as u32;
+    (lower_bound_row * 8.0 + lower_bound_col) as u32
 }
 
-fn solve_part_02(seat_ids: &Vec<u32>) {
-    let mut seat_ids = seat_ids.clone();
-    seat_ids.sort();
+fn solve_part_02(seat_ids: &[u32]) {
+    let mut seat_ids = seat_ids.to_owned();
+    seat_ids.sort_unstable();
 
     for (i, seat_id) in seat_ids.iter().enumerate() {
         if i == 0 {

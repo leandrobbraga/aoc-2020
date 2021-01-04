@@ -8,7 +8,8 @@ fn main() {
     solve_part_02(&mut seat_map);
 }
 
-fn print_seat_map(seat_map: &Vec<Vec<char>>) {
+#[allow(dead_code)]
+fn print_seat_map(seat_map: &[Vec<char>]) {
     seat_map
         .iter()
         .map(|line| println!("{}", line.iter().collect::<String>()))
@@ -47,7 +48,7 @@ fn solve_part_01(seat_map: &mut Vec<Vec<char>>) {
     println!("Part 1: {}", seats)
 }
 
-fn adjacent_seats(i: usize, j: usize, seat_map: &Vec<Vec<char>>) -> u32 {
+fn adjacent_seats(i: usize, j: usize, seat_map: &[Vec<char>]) -> u32 {
     let ilb: usize = max(0, i as i32 - 1) as usize;
     let iub: usize = min(seat_map.len(), (i as i32 + 2) as usize);
 
@@ -56,13 +57,13 @@ fn adjacent_seats(i: usize, j: usize, seat_map: &Vec<Vec<char>>) -> u32 {
 
     let mut count: u32 = 0;
 
-    for line in ilb..iub {
-        for col in jlb..jub {
+    for (line, item) in seat_map.iter().enumerate().take(iub).skip(ilb) {
+        for (col, value) in item.iter().enumerate().take(jub).skip(jlb) {
             if (line == i) && (col == j) {
                 continue;
             }
 
-            if seat_map[line][col] == '#' {
+            if *value == '#' {
                 count += 1;
             }
         }
@@ -70,7 +71,7 @@ fn adjacent_seats(i: usize, j: usize, seat_map: &Vec<Vec<char>>) -> u32 {
     count
 }
 
-fn count_seats(seat_map: &Vec<Vec<char>>) -> u32 {
+fn count_seats(seat_map: &[Vec<char>]) -> u32 {
     seat_map
         .iter()
         .map(|line| line.iter().filter(|char| **char == '#').count() as u32)
@@ -109,7 +110,7 @@ fn solve_part_02(seat_map: &mut Vec<Vec<char>>) {
     println!("Part 2: {}", seats)
 }
 
-fn seats_in_vision(i: usize, j: usize, seat_map: &Vec<Vec<char>>) -> u32 {
+fn seats_in_vision(i: usize, j: usize, seat_map: &[Vec<char>]) -> u32 {
     let mut count: u32 = 0;
 
     let mut position: (i32, i32);

@@ -58,7 +58,7 @@ fn main() {
     println!("part-2 result: {}", result_2);
 }
 
-fn parse_password_policies(password_policies: &String) -> Vec<PasswordPolicy> {
+fn parse_password_policies(password_policies: &str) -> Vec<PasswordPolicy> {
     password_policies
         .lines()
         .map(|policy| parse_password_policy(policy))

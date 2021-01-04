@@ -15,7 +15,7 @@ fn main() {
     println!("{}", result_2);
 }
 
-fn solve_part_1(numbers: &Vec<u32>) -> u32 {
+fn solve_part_1(numbers: &[u32]) -> u32 {
     for i in 0..numbers.len() {
         for j in i..numbers.len() {
             if numbers[i] + numbers[j] == 2020 {
@@ -23,10 +23,10 @@ fn solve_part_1(numbers: &Vec<u32>) -> u32 {
             }
         }
     }
-    return 0;
+    0
 }
 
-fn solve_part_2(numbers: &Vec<u32>) -> u32 {
+fn solve_part_2(numbers: &[u32]) -> u32 {
     for i in 0..numbers.len() {
         for j in i..numbers.len() {
             if numbers[i] + numbers[j] < 2020 {
@@ -38,5 +38,5 @@ fn solve_part_2(numbers: &Vec<u32>) -> u32 {
             }
         }
     }
-    return 0;
+    0
 }
